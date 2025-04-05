@@ -1,4 +1,4 @@
-package com.example;
+package com.github.JavaCodeVisualizer;
 
 import java.util.ArrayList;
 import java.util.List;

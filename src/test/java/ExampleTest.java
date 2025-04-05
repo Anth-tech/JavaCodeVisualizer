@@ -1,4 +1,4 @@
-import com.example.JavaClassObject;
+import com.github.JavaCodeVisualizer.JavaClassObject;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;

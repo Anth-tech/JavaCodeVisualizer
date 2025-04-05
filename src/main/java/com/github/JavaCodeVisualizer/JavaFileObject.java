@@ -1,22 +1,29 @@
-package com.example;
+package com.github.JavaCodeVisualizer;
 
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a parsed Java file and contains its metadata,
+ * such as file name, file path, package, imports, and classes
+ */
 public class JavaFileObject {
-    private String fileName;
-    private Path filePath;
-    private String filePackage;
-    private List<String> imports;
-    private List<JavaClassObject> classes;
+    private final String fileName;
+    private final Path filePath;
+    private final String filePackage;
+    private final List<String> imports;
+    private final List<JavaClassObject> classes;
 
+    /**
+     * private constructor which uses a builder
+     * @param builder object builder
+     */
     private JavaFileObject(Builder builder) {
         this.fileName = builder.fileName;
         this.filePath = builder.filePath;
@@ -43,10 +50,13 @@ public class JavaFileObject {
 
     @Override
     public String toString() {
-        return "JavaFileObject [fileName=" + fileName + ", filePath=" + filePath + ", filePackage=" + filePackage
-                + ", imports=" + ", classes=" + classes + "]";
+        return "JavaFileObject [fileName=" + fileName + "\nfilePath=" + filePath + "\nfilePackage=" + filePackage
+                + "\nimports=" + imports + "\nclasses=" + classes.stream().map(JavaClassObject::getClassName).toList() + "]";
     }
 
+    /**
+     * Builder for JavaFileObject
+     */
     public static class Builder {
         private String fileName;
         private Path filePath;
