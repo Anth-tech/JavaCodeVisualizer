@@ -1,12 +1,15 @@
 package com.example;
 
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JavaClassObject {
     private String className;
-    private String accessModifier;
-    private List<String> nonAccessModifiers;
+    private List<String> modifiers;
     private List<String> interfaceNames;
     private String superClassName;
     private List<JavaMethodObject> methods;
@@ -14,8 +17,7 @@ public class JavaClassObject {
 
     private JavaClassObject(Builder builder) {
         this.className = builder.className;
-        this.accessModifier = builder.accessModifier;
-        this.nonAccessModifiers = builder.nonAccessModifiers;
+        this.modifiers = builder.modifiers;
         this.interfaceNames = builder.interfaceNames;
         this.superClassName = builder.superClassName;
         this.methods = builder.methods;
@@ -24,11 +26,8 @@ public class JavaClassObject {
     public String getClassName() {
         return className;
     }
-    public String getAccessModifier() {
-        return accessModifier;
-    }
-    public List<String> getNonAccessModifiers() {
-        return nonAccessModifiers;
+    public String getModifiers() {
+        return modifiers.toString();
     }
     public List<String> getInterfaceNames() {
         return interfaceNames;
@@ -42,8 +41,7 @@ public class JavaClassObject {
 
     public static class Builder {
         private String className;
-        private String accessModifier;
-        private List<String> nonAccessModifiers = new ArrayList<>();
+        private List<String> modifiers = new ArrayList<>();
         private List<String> interfaceNames = new ArrayList<>();
         private String superClassName;
         private List<JavaMethodObject> methods = new ArrayList<>();
@@ -53,12 +51,8 @@ public class JavaClassObject {
             this.className = className;
             return this;
         }
-        public Builder accessModifier(String accessModifier) {
-            this.accessModifier = accessModifier;
-            return this;
-        }
-        public Builder nonAccessModifiers(List<String> nonAccessModifiers) {
-            this.nonAccessModifiers = nonAccessModifiers;
+        public Builder modifiers(NodeList<Modifier> modifiers) {
+            this.modifiers = modifiers.stream().map(Modifier::toString).collect(Collectors.toList());
             return this;
         }
         public Builder interfaceNames(List<String> interfaceNames) {

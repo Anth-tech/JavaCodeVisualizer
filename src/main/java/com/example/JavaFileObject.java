@@ -1,8 +1,14 @@
 package com.example;
 
+import com.github.javaparser.ast.ImportDeclaration;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.PackageDeclaration;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class JavaFileObject {
     private String fileName;
@@ -35,6 +41,12 @@ public class JavaFileObject {
         return classes;
     }
 
+    @Override
+    public String toString() {
+        return "JavaFileObject [fileName=" + fileName + ", filePath=" + filePath + ", filePackage=" + filePackage
+                + ", imports=" + ", classes=" + classes + "]";
+    }
+
     public static class Builder {
         private String fileName;
         private Path filePath;
@@ -50,12 +62,14 @@ public class JavaFileObject {
             this.filePath = filePath;
             return this;
         }
-        public Builder filePackage(String filePackage) {
-            this.filePackage = filePackage;
+        public Builder filePackage(Optional<PackageDeclaration> filePackage) {
+            if (filePackage.isPresent()) {
+                this.filePackage = filePackage.get().getName().toString();
+            }
             return this;
         }
-        public Builder imports(List<String> imports) {
-            this.imports = imports;
+        public Builder imports(NodeList<ImportDeclaration> imports) {
+            this.imports = imports.stream().map(ImportDeclaration::getNameAsString).collect(Collectors.toList());
             return this;
         }
         public Builder classes(List<JavaClassObject> classes) {
