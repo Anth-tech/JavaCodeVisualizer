@@ -1,38 +1,44 @@
 package com.github.JavaCodeVisualizer;
 
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.ReferenceType;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class JavaMethodObject {
-    private String fullQualifiedName;
-    private String returnType;
-    private String accessModifier;
-    private List<String> nonAccessModifiers;
-    private List<String> parameterTypes;
-    private List<String> parameterNames;
-    private List<String> exceptionTypes;
-    private String methodBody;
+    private final String methodName;
+    private final String returnType;
+    private final List<String> modifiers;
+    private final List<String> parameters;
+    private final List<String> exceptionTypes;
+    private final String methodBody;
 
     private JavaMethodObject(Builder builder) {
+        this.methodName = builder.methodName;
+        this.returnType = builder.returnType;
+        this.modifiers = builder.modifiers;
+        this.parameters = builder.parameters;
+        this.exceptionTypes = builder.exceptionTypes;
+        this.methodBody = builder.methodBody;
 
     }
-    public String getFullQualifiedName() {
-        return fullQualifiedName;
+    public String getMethodName() {
+        return methodName;
     }
     public String getReturnType() {
         return returnType;
     }
-    public String getAccessModifier() {
-        return accessModifier;
+    public List<String> getModifiers() {
+        return modifiers;
     }
-    public List<String> getNonAccessModifiers() {
-        return nonAccessModifiers;
-    }
-    public List<String> getParameterTypes() {
-        return parameterTypes;
-    }
-    public List<String> getParameterNames() {
-        return parameterNames;
+    public List<String> getParameters() {
+        return parameters;
     }
     public List<String> getExceptionTypes() {
         return exceptionTypes;
@@ -41,46 +47,50 @@ public class JavaMethodObject {
         return methodBody;
     }
 
+
+    @Override
+    public String toString() {
+        return "MethodName=" + methodName
+                + "\nReturnType=" + returnType
+                + "\nModifiers=" + modifiers
+                + "\nParameters=" + parameters
+                + "\nExceptionTypes=" + exceptionTypes
+                + "\nMethodBody=" + methodBody;
+    }
+
+
     public static class Builder {
-        private String fullQualifiedName;
+        private String methodName;
         private String returnType;
-        private String accessModifier;
-        private List<String> nonAccessModifiers = new ArrayList<>();
-        private List<String> parameterTypes = new ArrayList<>();
-        private List<String> parameterNames = new ArrayList<>();
+        private List<String> modifiers = new ArrayList<>();
+        private List<String> parameters = new ArrayList<>();
         private List<String> exceptionTypes = new ArrayList<>();
         private String methodBody;
 
-        public Builder fullQualifiedName(String fullQualifiedName) {
-            this.fullQualifiedName = fullQualifiedName;
+        public Builder methodName(String methodName) {
+            this.methodName = methodName;
             return this;
         }
         public Builder returnType(String returnType) {
             this.returnType = returnType;
             return this;
         }
-        public Builder accessModifier(String accessModifier) {
-            this.accessModifier = accessModifier;
+        public Builder modifiers(NodeList<Modifier> modifiers) {
+            this.modifiers = modifiers.stream().map(Modifier::toString).collect(Collectors.toList());
             return this;
         }
-        public Builder nonAccessModifiers(List<String> nonAccessModifiers) {
-            this.nonAccessModifiers = nonAccessModifiers;
+        public Builder parameters(NodeList<Parameter> parameters) {
+            this.parameters = parameters.stream().map(Parameter::toString).collect(Collectors.toList());
             return this;
         }
-        public Builder parameterTypes(List<String> parameterTypes) {
-            this.parameterTypes = parameterTypes;
+        public Builder exceptionTypes(NodeList<ReferenceType> exceptions) {
+            this.exceptionTypes = exceptions.stream().map(ReferenceType::toString).collect(Collectors.toList());
             return this;
         }
-        public Builder parameterNames(List<String> parameterNames) {
-            this.parameterNames = parameterNames;
-            return this;
-        }
-        public Builder exceptionTypes(List<String> exceptionTypes) {
-            this.exceptionTypes = exceptionTypes;
-            return this;
-        }
-        public Builder methodBody(String methodBody) {
-            this.methodBody = methodBody;
+        public Builder methodBody(Optional<BlockStmt> body) {
+            if (body.isPresent()) {
+                this.methodBody = body.get().toString();
+            }
             return this;
         }
 

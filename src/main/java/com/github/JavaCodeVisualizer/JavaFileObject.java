@@ -50,8 +50,11 @@ public class JavaFileObject {
 
     @Override
     public String toString() {
-        return "JavaFileObject [fileName=" + fileName + "\nfilePath=" + filePath + "\nfilePackage=" + filePackage
-                + "\nimports=" + imports + "\nclasses=" + classes.stream().map(JavaClassObject::getClassName).toList() + "]";
+        return "FileName=" + fileName
+                + "\nFilePath=" + filePath
+                + "\nFilePackage=" + filePackage
+                + "\nImports=" + imports
+                + "\nClasses=" + classes.stream().map(JavaClassObject::toString).toList();
     }
 
     /**

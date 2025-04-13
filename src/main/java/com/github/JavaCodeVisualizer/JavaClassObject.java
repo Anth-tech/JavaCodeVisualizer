@@ -51,6 +51,16 @@ public class JavaClassObject {
         return fields;
     }
 
+    @Override
+    public String toString() {
+        return "ClassName=" + className
+                + "\nModifiers=" + modifiers
+                + "\nInterfaceNames=" + interfaceNames
+                + "\nExtendedTypes=" + extendedTypes
+                + "\nMethods=" + methods.stream().map(JavaMethodObject::toString).toList()
+                + "\nFields=" + fields.stream().map(JavaFieldObject::toString).toList();
+    }
+
     public static class Builder {
         private String className;
         private List<String> modifiers = new ArrayList<>();
