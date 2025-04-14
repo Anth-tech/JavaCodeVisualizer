@@ -6,7 +6,6 @@ import com.github.javaparser.ast.PackageDeclaration;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +31,10 @@ public class JavaFileObject {
         this.classes = builder.classes;
     }
 
+
+    /**
+     * Getters
+     */
     public String getFileName() {
         return fileName;
     }
@@ -48,6 +51,9 @@ public class JavaFileObject {
         return classes;
     }
 
+    /**
+     * toString for debugging
+     */
     @Override
     public String toString() {
         return "FileName=" + fileName
@@ -75,9 +81,9 @@ public class JavaFileObject {
             this.filePath = filePath;
             return this;
         }
-        public Builder filePackage(Optional<PackageDeclaration> filePackage) {
-            if (filePackage.isPresent()) {
-                this.filePackage = filePackage.get().getName().toString();
+        public Builder filePackage(PackageDeclaration filePackage) {
+            if (filePackage != null) {
+                this.filePackage = filePackage.toString();
             }
             return this;
         }

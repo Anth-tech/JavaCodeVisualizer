@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a parsed Java Field and contains its metadata
+ */
 public class JavaFieldObject {
     private final String fieldBody;
     private final List<JavaVariableObject> variables;
@@ -18,6 +21,9 @@ public class JavaFieldObject {
         this.modifiers = builder.modifiers;
     }
 
+    /**
+     * Getters
+     */
     public String getFieldBody() {
         return this.fieldBody;
     }
@@ -28,6 +34,9 @@ public class JavaFieldObject {
         return this.modifiers;
     }
 
+    /**
+     * toString for debugging
+     */
     @Override
     public String toString() {
         return "FieldBody=" + fieldBody
@@ -35,6 +44,9 @@ public class JavaFieldObject {
                 + "\nModifiers=" + modifiers;
     }
 
+    /**
+     * Builder for JavaFieldObject
+     */
     public static class Builder {
         private String fieldBody;
         private List<JavaVariableObject> variables = new ArrayList<>();

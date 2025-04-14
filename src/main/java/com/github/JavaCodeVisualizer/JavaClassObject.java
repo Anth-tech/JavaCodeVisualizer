@@ -32,11 +32,15 @@ public class JavaClassObject {
         this.methods = builder.methods;
         this.fields = builder.fields;
     }
+
+    /**
+     * Getters
+     */
     public String getClassName() {
         return className;
     }
-    public String getModifiers() {
-        return modifiers.toString();
+    public List<String> getModifiers() {
+        return modifiers;
     }
     public List<String> getInterfaceNames() {
         return interfaceNames;
@@ -51,6 +55,9 @@ public class JavaClassObject {
         return fields;
     }
 
+    /**
+     * toString for debugging
+     */
     @Override
     public String toString() {
         return "ClassName=" + className
@@ -61,6 +68,9 @@ public class JavaClassObject {
                 + "\nFields=" + fields.stream().map(JavaFieldObject::toString).toList();
     }
 
+    /**
+     * Builder for JavaClassObject
+     */
     public static class Builder {
         private String className;
         private List<String> modifiers = new ArrayList<>();

@@ -65,12 +65,7 @@ public class Main extends Application{
 
 
     public static void main(String[] args) throws Exception {
-        // Create a TypeSolver to resolve symbols and references
-        // TypeSolver typeSolver = new CombinedTypeSolver();
 
-        //System.out.println("Enter the file path: ");
-        //Scanner reader = new Scanner(System.in);
-        //String filePath = reader.nextLine();
         Path path = Paths.get(FILE_PATH2);
         //  Create a CompilationUnit object, this is the root of the AST and represents a single file
         CompilationUnit root = StaticJavaParser.parse(Files.newInputStream(path));
@@ -101,7 +96,7 @@ public class Main extends Application{
         JavaFileObject fileObject = new JavaFileObject.Builder()
                 .fileName(path.getFileName().toString())
                 .filePath(path)
-                .filePackage(root.getPackageDeclaration())
+                .filePackage(root.getPackageDeclaration().get())
                 .classes(classesList)
                 .imports(root.getImports())
                 .build();
@@ -125,7 +120,7 @@ public class Main extends Application{
                    .modifiers(md.getModifiers())
                    .parameters(md.getParameters())
                    .exceptionTypes(md.getThrownExceptions())
-                   .methodBody(md.getBody())
+                   .methodBody(md.getBody().get())
                    .build()
            );
         });

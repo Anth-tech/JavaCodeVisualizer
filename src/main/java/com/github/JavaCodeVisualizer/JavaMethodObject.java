@@ -8,9 +8,11 @@ import com.github.javaparser.ast.type.ReferenceType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a parsed Java Method and contains its metadata
+ */
 public class JavaMethodObject {
     private final String methodName;
     private final String returnType;
@@ -28,6 +30,10 @@ public class JavaMethodObject {
         this.methodBody = builder.methodBody;
 
     }
+
+    /**
+     * Getters
+     */
     public String getMethodName() {
         return methodName;
     }
@@ -48,6 +54,9 @@ public class JavaMethodObject {
     }
 
 
+    /**
+     * toString for debugging
+     */
     @Override
     public String toString() {
         return "MethodName=" + methodName
@@ -59,6 +68,9 @@ public class JavaMethodObject {
     }
 
 
+    /**
+     * Builder for JavaMethodObject
+     */
     public static class Builder {
         private String methodName;
         private String returnType;
@@ -87,9 +99,9 @@ public class JavaMethodObject {
             this.exceptionTypes = exceptions.stream().map(ReferenceType::toString).collect(Collectors.toList());
             return this;
         }
-        public Builder methodBody(Optional<BlockStmt> body) {
-            if (body.isPresent()) {
-                this.methodBody = body.get().toString();
+        public Builder methodBody(BlockStmt body) {
+            if (body != null) {
+                this.methodBody = body.toString();
             }
             return this;
         }

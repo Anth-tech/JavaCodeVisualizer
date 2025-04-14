@@ -2,12 +2,14 @@ import com.github.JavaCodeVisualizer.JavaFileObject;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.PackageDeclaration;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +21,7 @@ public class JavaFileObject_toString_Test {
         JavaFileObject testFileObject = new JavaFileObject.Builder()
                 .fileName(path.getFileName().toString())
                 .filePath(path)
-                .filePackage(cu.getPackageDeclaration())
+                .filePackage(cu.getPackageDeclaration().get())
                 .imports(cu.getImports())
                 .classes(null)
                 .build();

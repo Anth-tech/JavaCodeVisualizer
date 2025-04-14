@@ -1,5 +1,8 @@
 package com.github.JavaCodeVisualizer;
 
+/**
+ * Represents a parsed Java variable expression and contains its metadata
+ */
 public class JavaVariableObject {
     private final String name;
     private final String type;
@@ -11,6 +14,9 @@ public class JavaVariableObject {
         this.initializer = builder.initializer;
     }
 
+    /**
+     * Getters
+     */
     public String getName() {
         return this.name;
     }
@@ -21,6 +27,9 @@ public class JavaVariableObject {
         return this.initializer;
     }
 
+    /**
+     * toString for debugging
+     */
     @Override
     public String toString() {
         return "VariableName=" + name
@@ -28,6 +37,9 @@ public class JavaVariableObject {
                 + "\nInitializer=" + initializer;
     }
 
+    /**
+     * Builder for JavaVariableObject
+     */
     public static class Builder {
         private String name;
         private String type;
