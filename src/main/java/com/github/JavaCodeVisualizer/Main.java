@@ -12,10 +12,57 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
-public class Main {
+
+public class Main extends Application{
     private static final String FILE_PATH2 = "C:\\Users\\antho\\Desktop\\Assignment 5\\Assignment 5\\Main.java";
     private static final String FILE_PATH = "C:\\Users\\antho\\Desktop\\CSCI 4270\\Assignment 4\\Assignment4.java";
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Button submitButton = new Button();
+        submitButton.setText("Submit");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(submitButton);
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+           @Override
+           public void handle(ActionEvent event) {
+
+           }
+        });
+
+        Label path = new Label("Path:");
+        TextField pathText = new TextField();
+
+        GridPane fxRoot = new GridPane();
+        fxRoot.setAlignment(Pos.CENTER);
+        fxRoot.setHgap(10);
+        fxRoot.setVgap(10);
+        fxRoot.setPadding(new Insets(25, 25, 25, 25));
+        fxRoot.add(path, 0, 1);
+        fxRoot.add(pathText, 1, 1);
+        fxRoot.add(hbBtn, 1, 3);
+        Scene scene = new Scene(fxRoot, 300, 275);
+
+        primaryStage.setTitle("Code Visualizer");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
 
     public static void main(String[] args) throws Exception {
         // Create a TypeSolver to resolve symbols and references
@@ -65,6 +112,7 @@ public class Main {
         });
 
         //reader.close();
+        launch(args);
     }
 
     private static List<JavaMethodObject> getJavaMethodObjects(ClassOrInterfaceDeclaration c) {
