@@ -1,4 +1,4 @@
-package com.github.JavaCodeVisualizer;
+package com.github.JavaCodeVisualizer.model;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;

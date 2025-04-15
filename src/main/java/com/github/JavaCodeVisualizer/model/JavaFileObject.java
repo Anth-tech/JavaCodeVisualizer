@@ -1,8 +1,7 @@
-package com.github.JavaCodeVisualizer;
+package com.github.JavaCodeVisualizer.model;
 
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.PackageDeclaration;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,7 @@ public class JavaFileObject {
     private final String filePackage;
     private final List<String> imports;
     private final List<JavaClassObject> classes;
+    private final List<JavaClassObject> interfaces;
 
     /**
      * private constructor which uses a builder
@@ -29,6 +29,7 @@ public class JavaFileObject {
         this.filePackage = builder.filePackage;
         this.imports = builder.imports;
         this.classes = builder.classes;
+        this.interfaces = builder.interfaces;
     }
 
 
@@ -50,6 +51,9 @@ public class JavaFileObject {
     public List<JavaClassObject> getClasses() {
         return classes;
     }
+    public List<JavaClassObject> getInterfaces() {
+        return interfaces;
+    }
 
     /**
      * toString for debugging
@@ -60,7 +64,8 @@ public class JavaFileObject {
                 + "\nFilePath=" + filePath
                 + "\nFilePackage=" + filePackage
                 + "\nImports=" + imports
-                + "\nClasses=" + classes.stream().map(JavaClassObject::toString).toList();
+                + "\nClasses=" + classes.stream().map(JavaClassObject::toString).toList()
+                + "\nInterfaces=" + interfaces.stream().map(JavaClassObject::toString).toList();
     }
 
     /**
@@ -72,6 +77,7 @@ public class JavaFileObject {
         private String filePackage;
         private List<String> imports = new ArrayList<>();
         private List<JavaClassObject> classes = new ArrayList<>();
+        private List<JavaClassObject> interfaces = new ArrayList<>();
 
         public Builder fileName(String fileName) {
             this.fileName = fileName;
@@ -81,10 +87,8 @@ public class JavaFileObject {
             this.filePath = filePath;
             return this;
         }
-        public Builder filePackage(PackageDeclaration filePackage) {
-            if (filePackage != null) {
-                this.filePackage = filePackage.toString();
-            }
+        public Builder filePackage(String filePackage) {
+            this.filePackage = filePackage;
             return this;
         }
         public Builder imports(NodeList<ImportDeclaration> imports) {
@@ -93,6 +97,10 @@ public class JavaFileObject {
         }
         public Builder classes(List<JavaClassObject> classes) {
             this.classes = classes;
+            return this;
+        }
+        public Builder interfaces(List<JavaClassObject> interfaces) {
+            this.interfaces = interfaces;
             return this;
         }
 

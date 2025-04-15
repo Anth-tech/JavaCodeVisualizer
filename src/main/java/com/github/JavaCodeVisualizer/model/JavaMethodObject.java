@@ -1,4 +1,4 @@
-package com.github.JavaCodeVisualizer;
+package com.github.JavaCodeVisualizer.model;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
@@ -99,10 +99,8 @@ public class JavaMethodObject {
             this.exceptionTypes = exceptions.stream().map(ReferenceType::toString).collect(Collectors.toList());
             return this;
         }
-        public Builder methodBody(BlockStmt body) {
-            if (body != null) {
-                this.methodBody = body.toString();
-            }
+        public Builder methodBody(String body) {
+            this.methodBody = body;
             return this;
         }
 

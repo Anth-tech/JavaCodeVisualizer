@@ -1,4 +1,4 @@
-package com.github.JavaCodeVisualizer;
+package com.github.JavaCodeVisualizer.parser;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;

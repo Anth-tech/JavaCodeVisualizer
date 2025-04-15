@@ -1,4 +1,4 @@
-package com.github.JavaCodeVisualizer;
+package com.github.JavaCodeVisualizer.model;
 
 /**
  * Represents a parsed Java variable expression and contains its metadata
