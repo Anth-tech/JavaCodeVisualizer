@@ -25,8 +25,11 @@ import com.github.javaparser.ast.CompilationUnit;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 
 public class Main extends Application{
@@ -40,21 +43,29 @@ public class Main extends Application{
         // Fx elements and actions setup
         // -----------------------------------------------------------------------
 
+        List<JavaFileObject> parsedJavaFiles = new ArrayList<>();
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose a folder");
         File directory = directoryChooser.showDialog(primaryStage);
         if (directory.isFile()) {
             if (directory.getName().endsWith(".java")) {
                 Map<Path, CompilationUnit> parsedCompilationUnits = JavaParserEngine.parseSingleFile(directory);
-                List<JavaFileObject> parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
+                parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
             } else {
                 throw new Exception("File is not a java file");
             }
         } else if (directory.isDirectory()) {
-            File[] files = directory.listFiles(file -> file.getName().endsWith(".java"));
-            if (files != null) {
+            List<File> files = new ArrayList<>();
+            try (Stream<Path> walkStream = Files.walk(Paths.get(directory.getName()))) {
+                walkStream.filter(p-> p.toFile().isFile()).forEach(f -> {
+                    if (f.toString().endsWith(".java")) {
+                        files.add(f.toFile());
+                    }
+                });
+            }
+            if (!files.isEmpty()) {
                 Map<Path, CompilationUnit> parsedCompilationUnits = JavaParserEngine.parseDirectory(files);
-                List<JavaFileObject> parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
+                parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
             }
         }
 
@@ -73,7 +84,11 @@ public class Main extends Application{
         // -----------------------------------------------------------------------
         // Parsing logic and object creation
         // -----------------------------------------------------------------------
-
+        if (!parsedJavaFiles.isEmpty()) {
+            for (JavaFileObject file : parsedJavaFiles) {
+                System.out.println(file.toString());
+            }
+        }
     }
 
     public static void main(String[] args) {

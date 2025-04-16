@@ -31,10 +31,10 @@ public class JavaParserEngine {
      * @return hashmap with the path and corresponding compilation unit
      * @throws IOException if path is missing or invalid
      */
-    public static Map<Path, CompilationUnit> parseDirectory(File[] files) throws IOException {
+    public static Map<Path, CompilationUnit> parseDirectory(List<File> files) throws IOException {
         Map<Path, CompilationUnit> compilationUnits = new HashMap<>();
         for (File file: files) {
-            String filePath = file.getAbsolutePath();
+            String filePath = file.getCanonicalPath();
             Path path = Paths.get(filePath);
             CompilationUnit root = StaticJavaParser.parse(Files.newInputStream(path));
             compilationUnits.put(path, root);
@@ -50,7 +50,7 @@ public class JavaParserEngine {
      */
     public static Map<Path, CompilationUnit> parseSingleFile(File file) throws IOException {
         Map<Path, CompilationUnit> compilationUnits = new HashMap<>();
-        String filePath = file.getAbsolutePath();
+        String filePath = file.getCanonicalPath();
         Path path = Paths.get(filePath);
         CompilationUnit root = StaticJavaParser.parse(Files.newInputStream(path));
         compilationUnits.put(path, root);
