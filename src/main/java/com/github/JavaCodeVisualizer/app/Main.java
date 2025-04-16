@@ -21,7 +21,12 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import com.github.javaparser.ast.CompilationUnit;
+
 import java.io.File;
+import java.io.FileFilter;
+import java.nio.file.Path;
+import java.util.*;
 
 
 public class Main extends Application{
@@ -35,37 +40,29 @@ public class Main extends Application{
         // Fx elements and actions setup
         // -----------------------------------------------------------------------
 
-        final Text actionTarget = new Text();
-
-        //Label pathLabel = new Label("Path:");
-        //TextField pathText = new TextField();
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose a java file");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Java Files", "*.java")
-        );
-        File selectedFile = fileChooser.showOpenDialog(primaryStage);
-
-        Button submitButton = new Button();
-        submitButton.setText("Submit");
-        submitButton.setOnAction( event -> {
-            //FILE_PATH = pathText.getText();
-        });
-
-        HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(submitButton);
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Choose a folder");
+        File directory = directoryChooser.showDialog(primaryStage);
+        if (directory.isFile()) {
+            if (directory.getName().endsWith(".java")) {
+                Map<Path, CompilationUnit> parsedCompilationUnits = JavaParserEngine.parseSingleFile(directory);
+                List<JavaFileObject> parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
+            } else {
+                throw new Exception("File is not a java file");
+            }
+        } else if (directory.isDirectory()) {
+            File[] files = directory.listFiles(file -> file.getName().endsWith(".java"));
+            if (files != null) {
+                Map<Path, CompilationUnit> parsedCompilationUnits = JavaParserEngine.parseDirectory(files);
+                List<JavaFileObject> parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
+            }
+        }
 
         GridPane fxRoot = new GridPane();
         fxRoot.setAlignment(Pos.CENTER);
         fxRoot.setHgap(10);
         fxRoot.setVgap(10);
         fxRoot.setPadding(new Insets(25, 25, 25, 25));
-        //fxRoot.add(pathLabel, 0, 1);
-        //fxRoot.add(pathText, 1, 1);
-        fxRoot.add(hbBtn, 1, 3);
-        fxRoot.add(actionTarget, 1, 4);
 
         Scene scene = new Scene(fxRoot, 300, 275);
 
@@ -77,7 +74,6 @@ public class Main extends Application{
         // Parsing logic and object creation
         // -----------------------------------------------------------------------
 
-        //JavaFileObject fileObject = JavaParserEngine.parse(FILE_PATH);
     }
 
     public static void main(String[] args) {
