@@ -47,27 +47,10 @@ public class Main extends Application{
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose a folder");
         File directory = directoryChooser.showDialog(primaryStage);
-        if (directory.isFile()) {
-            if (directory.getName().endsWith(".java")) {
-                Map<Path, CompilationUnit> parsedCompilationUnits = JavaParserEngine.parseSingleFile(directory);
-                parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
-            } else {
-                throw new Exception("File is not a java file");
-            }
-        } else if (directory.isDirectory()) {
-            List<File> files = new ArrayList<>();
-            try (Stream<Path> walkStream = Files.walk(Paths.get(directory.getName()))) {
-                walkStream.filter(p-> p.toFile().isFile()).forEach(f -> {
-                    if (f.toString().endsWith(".java")) {
-                        files.add(f.toFile());
-                    }
-                });
-            }
-            if (!files.isEmpty()) {
-                Map<Path, CompilationUnit> parsedCompilationUnits = JavaParserEngine.parseDirectory(files);
-                parsedJavaFiles = JavaParserEngine.parse(parsedCompilationUnits);
-            }
-        }
+
+        List<File> files = new ArrayList<>();
+        directorySearch(directory, ".java", files);
+
 
         GridPane fxRoot = new GridPane();
         fxRoot.setAlignment(Pos.CENTER);
@@ -93,5 +76,20 @@ public class Main extends Application{
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private static void directorySearch(File directory, String pattern, List<File> files) {
+        if (directory.isDirectory()) {
+            File[] subFiles = directory.listFiles();
+            if (subFiles != null) {
+                for (File file : subFiles) {
+                    directorySearch(file, pattern, files);
+                }
+            }
+        } else if (directory.isFile()) {
+            if (directory.getName().endsWith(pattern)) {
+                files.add(directory);
+            }
+        }
     }
 }
